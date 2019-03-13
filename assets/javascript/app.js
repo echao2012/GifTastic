@@ -55,4 +55,30 @@ $(document).ready(function() {
             $(this).attr("src", $(this).attr("data-still"));
         }
     })
+
+    function submitCategory(e) {
+        // Only respond to the submit button or the enter key
+        if (e.which === 1 || e.which === 13) {
+            // Prevent refreshing the page
+            e.preventDefault();
+
+            // Get the info entered into the textbox
+            var newCategory = $("#category-textbox").val().trim();
+
+            // Ensure the textbox is not blank
+            if (newCategory !== "") {
+                // Check that the category does not already exist
+                if (categories.indexOf(newCategory) < 0) {
+                    addButton(newCategory);
+                    categories.push(newCategory);
+                }
+
+                // Clear the textbox
+                $("#category-textbox").val("");
+            }
+        }
+    }
+
+    $("#submit-button").on("click", submitCategory);
+    $("#category-textbox").keypress(submitCategory);
 })
