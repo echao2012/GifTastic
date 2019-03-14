@@ -1,8 +1,66 @@
+h1 {
+    width: 100%;
+    padding: 15px;
+    font-size: 56px;
+    font-weight: bold;
+    color: white;
+    background-color: rgb(13, 109, 26);
+}
+
 .category-button {
     margin: 5px 5px;
+    padding: 6px 20px;
+    background-color: rgb(13, 109, 26);
+    border-color: rgb(13, 109, 26);
+}
+
+.category-button:hover,
+#add-category-card button:hover {
+    background-color: rgb(4, 206, 31);
+    border-color: rgb(4, 206, 31);
+}
+
+#add-category-card {
+    border-color: rgb(13, 109, 26);
+}
+
+#add-category-card > .card-header {
+    color: white;
+    background-color: rgb(13, 109, 26);
+}
+
+#add-category-card button {
+    background-color: rgb(13, 109, 26);
+    border-color: rgb(13, 109, 26);
 }
 
 .gif-div {
     display: inline-block;
-    margin: 20px 10px;
+    position: relative;
+    margin: 10px;
+}
+
+.gif-div:hover > .gif-div-text {
+    opacity: 1;
+}
+
+.gif-div-text {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 10px;
+    color: white;
+    background-color: rgba(13, 109, 26, 0.8);
+    opacity: 0;
+    transition: all 0.5s ease;
+}
+
+.gif-title-text {
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+.gif-rating-text {
+    font-size: 14px;
+    margin-bottom: 0;
 }

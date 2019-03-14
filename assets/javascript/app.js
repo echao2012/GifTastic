@@ -1,6 +1,7 @@
 $(document).ready(function() {
     // Array of preselected button categories to add
-    var categories = ["dog", "cat", "rabbit", "hamster"];
+    var categories = ["dog", "cat", "rabbit", "hamster", "fish", "lion", "tiger", "snake", "elephant", "bear", "horse", "whale", 
+                      "turtle", "crocodile", "dolphin", "wolf", "squirrel", "lizard", "frog", "penguin", "hippopotamus", "zebra"];
 
     // Add preselected button categories
     categories.forEach(function(category) {
@@ -26,24 +27,38 @@ $(document).ready(function() {
 
     // Adds 10 gifs of the provided search category
     function addGifs(category) {
-        var queryUrl = "http://api.giphy.com/v1/gifs/search?q=" + category + "&api_key=JhQEPNAO39YRBWjqrT7TWAAbCLD9Gdpi&limit=10"
+        var queryUrl = "https://api.giphy.com/v1/gifs/search?q=" + category + "&api_key=JhQEPNAO39YRBWjqrT7TWAAbCLD9Gdpi&limit=10"
         $.get(queryUrl).then(function(response) {
             // Clear all gifs
             $("#gifs-container").empty();
 
             response.data.forEach(function(gif) {
+                // Create a div for text that appears when hovered
+                var newTextDiv = $("<div>");
+                newTextDiv.addClass("gif-div-text");
+
+                // Create a new p for the title
+                var newTitle = $("<p>");
+                newTitle.addClass("gif-title-text");
+                newTitle.text(gif.title.replace(" GIF", "").toUpperCase());
+
                 // Create a new p for the rating
-                var newP = $("<p>");
-                newP.text("Rating: " + gif.rating);
+                var newRating = $("<p>");
+                newRating.addClass("gif-rating-text");
+                newRating.text("Rating: " + gif.rating);
+
+                // Add the p elements to the div
+                newTextDiv.append(newTitle);
+                newTextDiv.append(newRating);
 
                 // Create a new img
                 var newGif = $("<img>");
-                newGif.addClass("gif-item");
+                newGif.addClass("img-fluid rounded gif-img");
 
                 // Create a new div for the image and rating
                 var newDiv = $("<div>");
                 newDiv.addClass("gif-div");
-                newDiv.append(newP);
+                newDiv.append(newTextDiv);
                 newDiv.append(newGif);
 
                 // Save the still and animated urls
@@ -58,11 +73,12 @@ $(document).ready(function() {
     }
 
     // Toggles the animation when a gif is clicked
-    $("#gifs-container").on("click", ".gif-item", function() {
-        if ($(this).attr("src") === $(this).attr("data-still")) {
-            $(this).attr("src", $(this).attr("data-animated"));
+    $("#gifs-container").on("click", ".gif-div", function() {
+        var gif = $(this).find(".gif-img");
+        if (gif.attr("src") === gif.attr("data-still")) {
+            gif.attr("src", gif.attr("data-animated"));
         } else {
-            $(this).attr("src", $(this).attr("data-still"));
+            gif.attr("src", gif.attr("data-still"));
         }
     })
 
@@ -73,7 +89,7 @@ $(document).ready(function() {
             e.preventDefault();
 
             // Get the info entered into the textbox
-            var newCategory = $("#category-textbox").val().trim();
+            var newCategory = $("#category-textbox").val().trim().toLowerCase();
 
             // Ensure the textbox is not blank
             if (newCategory !== "") {
@@ -85,6 +101,9 @@ $(document).ready(function() {
 
                 // Clear the textbox
                 $("#category-textbox").val("");
+
+                // Load the gifs
+                addGifs(newCategory);
             }
         }
     }
