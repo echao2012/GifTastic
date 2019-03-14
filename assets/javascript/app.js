@@ -11,7 +11,7 @@ $(document).ready(function() {
     function addButton(category) {
         // Create a new search category button
         var newBtn = $("<button>");
-        newBtn.addClass("category-button");
+        newBtn.addClass("btn btn-primary category-button");
         newBtn.val(category);
         newBtn.text(category);
 
@@ -32,9 +32,19 @@ $(document).ready(function() {
             $("#gifs-container").empty();
 
             response.data.forEach(function(gif) {
+                // Create a new p for the rating
+                var newP = $("<p>");
+                newP.text("Rating: " + gif.rating);
+
                 // Create a new img
                 var newGif = $("<img>");
                 newGif.addClass("gif-item");
+
+                // Create a new div for the image and rating
+                var newDiv = $("<div>");
+                newDiv.addClass("gif-div");
+                newDiv.append(newP);
+                newDiv.append(newGif);
 
                 // Save the still and animated urls
                 newGif.attr("data-still", gif.images.fixed_height_still.url);
@@ -42,7 +52,7 @@ $(document).ready(function() {
                 newGif.attr("src", newGif.attr("data-still"));
 
                 // Add the img to the container
-                $("#gifs-container").append(newGif);
+                $("#gifs-container").append(newDiv);
             })
         })
     }
