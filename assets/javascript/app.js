@@ -1,12 +1,14 @@
 $(document).ready(function() {
     // Array of preselected button categories to add
     var categories = ["dog", "cat", "rabbit", "hamster", "fish", "lion", "tiger", "snake", "elephant", "bear", "horse", "whale", 
-                      "turtle", "crocodile", "dolphin", "wolf", "squirrel", "lizard", "frog", "penguin", "hippopotamus", "zebra"];
+                      "turtle", "crocodile", "dolphin", "wolf", "squirrel", "lizard", "frog", "penguin", "zebra"];
+    var currentCategory = "";
+    var offset = 0;
 
     // Add preselected button categories
     categories.forEach(function(category) {
         addButton(category);
-    })
+    });
 
     // Adds a search category button with the provided name
     function addButton(category) {
@@ -22,16 +24,27 @@ $(document).ready(function() {
 
     // Handles events when a search category button is clicked
     $("#buttons-container").on("click", ".category-button", function(){
-        addGifs($(this).val());
-    })
+        addGifs($(this).val(), false);
+    });
 
     // Adds 10 gifs of the provided search category
-    function addGifs(category) {
-        var queryUrl = "https://api.giphy.com/v1/gifs/search?q=" + category + "&api_key=JhQEPNAO39YRBWjqrT7TWAAbCLD9Gdpi&limit=10"
-        $.get(queryUrl).then(function(response) {
-            // Clear all gifs
-            $("#gifs-container").empty();
+    function addGifs(category, append) {
+        // Update the current category and offset if this is a new category
+        if (!append) {
+            currentCategory = category;
+            offset = 0;
+        } else {
+            offset += 10;
+        }
 
+        var queryUrl = "https://api.giphy.com/v1/gifs/search?q=" + category + "&api_key=JhQEPNAO39YRBWjqrT7TWAAbCLD9Gdpi&limit=10&offset=" + offset;
+        $.get(queryUrl).then(function(response) {
+            if (!append) {
+                // Clear all gifs
+                $("#gifs-container").empty();
+            }
+
+            var first = true;
             response.data.forEach(function(gif) {
                 // Create a div for text that appears when hovered
                 var newTextDiv = $("<div>");
@@ -68,6 +81,14 @@ $(document).ready(function() {
 
                 // Add the img to the container
                 $("#gifs-container").append(newDiv);
+
+                // Scroll to the added gif if this is the first that we are appending
+                if (first && append) {
+                    $([document.documentElement, document.body]).animate({
+                        scrollTop: $(newDiv).offset().top
+                    }, 1000);
+                }
+                first = false;
             })
         })
     }
@@ -80,7 +101,7 @@ $(document).ready(function() {
         } else {
             gif.attr("src", gif.attr("data-still"));
         }
-    })
+    });
 
     function submitCategory(e) {
         // Only respond to the submit button or the enter key
@@ -103,10 +124,15 @@ $(document).ready(function() {
                 $("#category-textbox").val("");
 
                 // Load the gifs
-                addGifs(newCategory);
+                addGifs(newCategory, false);
             }
         }
     }
+
+    // Load more gifs of the same category
+    $("#load-more-button").on("click", function() {
+        addGifs(currentCategory, true);
+    });
 
     $("#submit-button").on("click", submitCategory);
     $("#category-textbox").keypress(submitCategory);

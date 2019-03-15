@@ -1,3 +1,5 @@
+/* Title */
+
 h1 {
     width: 100%;
     padding: 15px;
@@ -7,21 +9,39 @@ h1 {
     background-color: rgb(13, 109, 26);
 }
 
-.category-button {
-    margin: 5px 5px;
-    padding: 6px 20px;
+/* Buttons */
+
+.category-button,
+#add-category-card button,
+#load-more-button {
     background-color: rgb(13, 109, 26);
     border-color: rgb(13, 109, 26);
 }
 
 .category-button:hover,
-#add-category-card button:hover {
+#add-category-card button:hover,
+#load-more-button:hover {
     background-color: rgb(4, 206, 31);
     border-color: rgb(4, 206, 31);
 }
 
+.category-button {
+    margin: 5px 5px;
+    padding: 6px 20px;
+}
+
+#load-more-button {
+    width: 100%;
+    border-radius: 0;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+/* Add category card */
+
 #add-category-card {
     border-color: rgb(13, 109, 26);
+    margin-top: 10px;
 }
 
 #add-category-card > .card-header {
@@ -29,16 +49,15 @@ h1 {
     background-color: rgb(13, 109, 26);
 }
 
-#add-category-card button {
-    background-color: rgb(13, 109, 26);
-    border-color: rgb(13, 109, 26);
-}
+/* Gif container */
 
 .gif-div {
     display: inline-block;
     position: relative;
     margin: 10px;
 }
+
+/* Gif info text */
 
 .gif-div:hover > .gif-div-text {
     opacity: 1;
